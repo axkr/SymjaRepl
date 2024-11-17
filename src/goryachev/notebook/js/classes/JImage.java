@@ -2,7 +2,7 @@
 package goryachev.notebook.js.classes;
 import goryachev.common.util.CKit;
 import goryachev.common.util.Keep;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.notebook.util.InlineHelp;
 import goryachev.swing.ImageScaler;
 import goryachev.swing.ImageTools;
@@ -45,7 +45,7 @@ public class JImage
 		}
 		else
 		{
-			Color c = JsUtil.parseColor(arg);
+			Color c = SymjaUtil.parseColor(arg);
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = image.createGraphics();
 			try

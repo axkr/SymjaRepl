@@ -3,7 +3,7 @@ package research.dhtml3;
 import goryachev.common.util.CMap;
 import goryachev.common.util.SB;
 import goryachev.common.util.UserException;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import java.awt.Color;
 
 
@@ -21,14 +21,14 @@ public class HStyle
 	
 	public HStyle backgroundColor(Object bg)
 	{
-		Color c = JsUtil.parseColor(bg);
+		Color c = SymjaUtil.parseColor(bg);
 		return attr(HAttr.BACKGROUND_COLOR, c);
 	}
 	
 	
 	public HStyle foregroundColor(Object fg)
 	{
-		Color c = JsUtil.parseColor(fg);
+		Color c = SymjaUtil.parseColor(fg);
 		return attr(HAttr.FOREGROUND_COLOR, c);
 	}
 	

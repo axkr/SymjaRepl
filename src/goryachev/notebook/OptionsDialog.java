@@ -52,7 +52,7 @@ public class OptionsDialog
 		// secure storage
 		b.addChild("Key-Value Storage");
 		{
-			b.addOption(new StorageEditor(RNotebookApp.getStorage()));
+			b.addOption(new StorageEditor(SymjaNotebookApp.getStorage()));
 		}
 		b.end();
 		

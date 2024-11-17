@@ -6,8 +6,8 @@ import goryachev.common.util.CKit;
 import goryachev.common.util.CMap;
 import goryachev.common.util.SB;
 import goryachev.common.util.UserException;
-import goryachev.notebook.js.JsUtil;
 import goryachev.notebook.js.classes.DTable;
+import goryachev.notebook.symja.SymjaUtil;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -131,19 +131,19 @@ public class DTableReader
 	
 	public void setDateFormat(Object f)
 	{
-		dateFormat = JsUtil.parseDateFormat(f);
+		dateFormat = SymjaUtil.parseDateFormat(f);
 	}
 	
 	
 	public void setDateTimeFormat(Object f)
 	{
-		dateTimeFormat = JsUtil.parseDateFormat(f);
+		dateTimeFormat = SymjaUtil.parseDateFormat(f);
 	}
 	
 	
 	public void setTimeFormat(Object f)
 	{
-		timeFormat = JsUtil.parseDateFormat(f);
+		timeFormat = SymjaUtil.parseDateFormat(f);
 	}
 	
 	
@@ -301,7 +301,7 @@ public class DTableReader
 	
 	public DTable readFile(Object file) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		CReader rd = new CReader(f, encoding);
 		return read(rd);
 	}

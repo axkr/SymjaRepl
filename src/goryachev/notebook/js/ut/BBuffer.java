@@ -1,7 +1,7 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.js.ut;
 import goryachev.common.util.Hex;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import java.util.Arrays;
 
 
@@ -75,7 +75,7 @@ public class BBuffer
 	{
 		int off = position >> 3;
 		int bit = position & 0x07;
-		boolean on = JsUtil.parseBit(value);
+		boolean on = SymjaUtil.parseBit(value);
 		if(on)
 		{
 			buffer[off] |= (1 << bit);

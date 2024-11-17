@@ -1,8 +1,8 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.js.nb;
-import goryachev.notebook.RNotebookApp;
-import goryachev.notebook.js.JsEngine;
-import goryachev.notebook.js.JsObjects;
+import goryachev.notebook.SymjaNotebookApp;
+import goryachev.notebook.symja.JsObjects;
+import goryachev.notebook.symja.SymjaEngine;
 import goryachev.notebook.util.Arg;
 import goryachev.notebook.util.Doc;
 import goryachev.notebook.util.InlineHelp;
@@ -20,7 +20,7 @@ public class NB
 	@Arg("x")
 	public void display(Object x)
 	{
-		JsEngine.get().display(x);
+		SymjaEngine.get().display(x);
 	}
 	
 	
@@ -28,7 +28,7 @@ public class NB
 	@Arg({"key", "value"})
 	public void setValue(String key, String val)
 	{
-		RNotebookApp.getStorage().setValue(key, val);
+		SymjaNotebookApp.getStorage().setValue(key, val);
 	}
 	
 	
@@ -36,7 +36,7 @@ public class NB
 	@Arg({"key"})
 	public String getValue(String key)
 	{
-		return RNotebookApp.getStorage().getValue(key);
+		return SymjaNotebookApp.getStorage().getValue(key);
 	}
 	
 	

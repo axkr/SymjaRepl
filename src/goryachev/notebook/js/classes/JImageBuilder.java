@@ -1,6 +1,6 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.js.classes;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.notebook.util.InlineHelp;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -23,7 +23,7 @@ public class JImageBuilder
 	
 	public JImageBuilder(int width, int height, String backgroundColor)
 	{
-		Color bg = JsUtil.parseColor(backgroundColor);
+		Color bg = SymjaUtil.parseColor(backgroundColor);
 		builder = new ImageBuilder(width, height, bg);
 	}
 	
@@ -36,7 +36,7 @@ public class JImageBuilder
 	
 	public JImageBuilder(Object x)
 	{
-		BufferedImage im = JsUtil.parseImage(x);
+		BufferedImage im = SymjaUtil.parseImage(x);
 		builder = new ImageBuilder(im);
 	}
 	
@@ -61,7 +61,7 @@ public class JImageBuilder
 	
 	public JImageBuilder setColor(Object color)
 	{
-		Color c = JsUtil.parseColor(color);
+		Color c = SymjaUtil.parseColor(color);
 		builder.setColor(c);
 		return this;
 	}
@@ -69,7 +69,7 @@ public class JImageBuilder
 	
 	public JImageBuilder setColor(double r, double g, double b)
 	{
-		Color c = JsUtil.parseColor(r, g, b, null);
+		Color c = SymjaUtil.parseColor(r, g, b, null);
 		builder.setColor(c);
 		return this;
 	}
@@ -77,7 +77,7 @@ public class JImageBuilder
 	
 	public JImageBuilder setColor(double r, double g, double b, double a)
 	{
-		Color c = JsUtil.parseColor(r, g, b, a);
+		Color c = SymjaUtil.parseColor(r, g, b, a);
 		builder.setColor(c);
 		return this;
 	}
@@ -113,7 +113,7 @@ public class JImageBuilder
 	
 	public JImageBuilder setStroke(Object ... a)
 	{
-		BasicStroke s = JsUtil.parseStroke(a);
+		BasicStroke s = SymjaUtil.parseStroke(a);
 		builder.setStroke(s);
 		return this;
 	}

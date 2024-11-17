@@ -5,10 +5,10 @@ import goryachev.json.JsonDecoder;
 import goryachev.notebook.DataBook;
 import goryachev.notebook.Schema;
 import goryachev.notebook.cell.CellType;
-import goryachev.notebook.js.JsError;
-import goryachev.notebook.js.JsUtil;
 import goryachev.notebook.js.classes.DPlot;
 import goryachev.notebook.js.classes.DTable;
+import goryachev.notebook.symja.SymjaError;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.swing.ImageTools;
 import java.io.Reader;
 
@@ -192,7 +192,7 @@ public class DataBookJsonReader
 					while(inArray())
 					{
 						String cv = nextString();
-						Object v = JsUtil.decodeTableCell(cv);
+						Object v = SymjaUtil.decodeTableCell(cv);
 						row.add(v);
 					}
 					endArray();
@@ -221,7 +221,7 @@ public class DataBookJsonReader
 		}
 		else if(Schema.RESULT_ERROR.equals(type))
 		{
-			return new JsError(text);
+			return new SymjaError(text);
 		}
 		else if(Schema.RESULT_TEXT.equals(type))
 		{

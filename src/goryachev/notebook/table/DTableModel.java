@@ -1,7 +1,7 @@
 // Copyright © 2012-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.table;
-import goryachev.notebook.js.classes.DTable;
 import javax.swing.table.AbstractTableModel;
+import goryachev.notebook.js.classes.DTable;
 
 
 public class DTableModel

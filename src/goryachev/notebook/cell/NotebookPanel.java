@@ -4,7 +4,7 @@ import goryachev.notebook.Accelerators;
 import goryachev.notebook.DataBook;
 import goryachev.notebook.MainWindow;
 import goryachev.notebook.Styles;
-import goryachev.notebook.js.JsEngine;
+import goryachev.notebook.symja.SymjaEngine;
 import goryachev.swing.CAction;
 import goryachev.swing.CComboBox;
 import goryachev.swing.CPanel;
@@ -52,7 +52,7 @@ public class NotebookPanel
 	public final InputTracker typeFieldTracker;
 	public final JPanel panel;
 	public final CellScrollPane scroll;
-	private JsEngine engine;
+	private SymjaEngine engine;
 	private CellPanel activeCell;
 	private boolean modified;
 	
@@ -84,7 +84,7 @@ public class NotebookPanel
 			}
 		};
 		
-		engine = new JsEngine(this);
+		engine = new SymjaEngine(this);
 		
 		UI.whenInFocusedWindow(this, Accelerators.COMMIT.getKeyStroke(), ctrlEnterAction);
 		
@@ -540,7 +540,7 @@ public class NotebookPanel
 		Object rv = d.openChoiceDialog();		
 		if(Boolean.TRUE.equals(rv))
 		{
-			engine = new JsEngine(this);
+			engine = new SymjaEngine(this);
 		}
 	}
 	

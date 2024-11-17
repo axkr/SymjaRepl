@@ -3,9 +3,9 @@ package goryachev.notebook.js.io;
 import goryachev.common.io.CReader;
 import goryachev.common.io.CSVReader;
 import goryachev.common.util.CKit;
-import goryachev.notebook.js.JsObjects;
-import goryachev.notebook.js.JsUtil;
 import goryachev.notebook.js.classes.DTable;
+import goryachev.notebook.symja.JsObjects;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.notebook.util.Arg;
 import goryachev.notebook.util.Doc;
 import goryachev.notebook.util.InlineHelp;
@@ -27,9 +27,9 @@ public class IO
 	@Arg("file")
 	public Object loadImage(Object file) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		BufferedImage im = ImageTools.read(f);
-		return JsUtil.wrap(im);
+		return SymjaUtil.wrap(im);
 	}
 	
 	
@@ -37,7 +37,7 @@ public class IO
 	@Arg("file")
 	public DTable loadTable(Object file) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		DTable t = new DTable();
 		CReader rd = new CReader(f);
 		try
@@ -103,7 +103,7 @@ public class IO
 	@Arg("file")
 	public String readText(Object file) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		return CKit.readString(f);
 	}
 	
@@ -112,7 +112,7 @@ public class IO
 	@Arg({"file", "encoding"})
 	public String readText(Object file, String encoding) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		Charset cs = Charset.forName(encoding);
 		return CKit.readString(f, cs);
 	}
@@ -123,7 +123,7 @@ public class IO
 	// TODO or elastic byte array?
 	public byte[] readBytes(Object file) throws Exception
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		return CKit.readBytes(f);
 	}
 	
@@ -132,8 +132,8 @@ public class IO
 	@Arg({"bytes", "file"})
 	public void writeBytes(Object bytes, Object file) throws Exception
 	{
-		byte[] b = JsUtil.parseByteArray(bytes);
-		File f = JsUtil.parseFile(file);
+		byte[] b = SymjaUtil.parseByteArray(bytes);
+		File f = SymjaUtil.parseFile(file);
 		CKit.write(b, f);
 	}
 	
@@ -148,7 +148,7 @@ public class IO
 	@Arg({"image", "file"})
 	public void writeImage(Object image, String file) throws Exception
 	{
-		BufferedImage im = JsUtil.parseImage(image);
+		BufferedImage im = SymjaUtil.parseImage(image);
 		ImageTools.write(im, new File(file));
 	}
 	

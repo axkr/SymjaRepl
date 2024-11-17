@@ -1,5 +1,8 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.util;
+import java.awt.Component;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import goryachev.common.util.CKit;
 import goryachev.common.util.CList;
 import goryachev.common.util.FileTools;
@@ -8,15 +11,11 @@ import goryachev.json.JsonEncoder;
 import goryachev.notebook.DataBook;
 import goryachev.notebook.Schema;
 import goryachev.notebook.cell.CellType;
-import goryachev.notebook.js.JsError;
-import goryachev.notebook.js.JsUtil;
 import goryachev.notebook.js.classes.DPlot;
 import goryachev.notebook.js.classes.DTable;
+import goryachev.notebook.symja.SymjaError;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.swing.ImageTools;
-import java.awt.Component;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import org.mozilla.javascript.Undefined;
 
 
 /** DataBook writer */
@@ -54,14 +53,14 @@ public class DataBookJsonWriter
 				{
 					for(Object r: rs)
 					{
-						if(r instanceof Undefined)
-						{
-							// do not write
-						}
-						else
-						{
+                      // if(r instanceof Undefined)
+                          // {
+                          // // do not write
+                          // }
+                          // else
+                          // {
 							writeResult(r);
-						}
+                        // }
 					}
 				}
 				wr.endArray();
@@ -81,9 +80,9 @@ public class DataBookJsonWriter
 				wr.write(Schema.KEY_OUTPUT_TYPE, Schema.RESULT_IMAGE);
 				wr.writeByteArray(Schema.KEY_OUTPUT_IMAGE, b);
 			}
-			else if(x instanceof JsError)
+			else if(x instanceof SymjaError)
 			{
-				String msg = ((JsError)x).error;
+				String msg = ((SymjaError)x).error;
 				wr.write(Schema.KEY_OUTPUT_TYPE, Schema.RESULT_ERROR);
 				wr.write(Schema.KEY_OUTPUT_TEXT, msg);
 			}
@@ -117,7 +116,7 @@ public class DataBookJsonWriter
 							{
 								for(int j=0; j<cells.length; j++)
 								{
-									wr.value(JsUtil.encodeTableCell(cells[j]));
+									wr.value(SymjaUtil.encodeTableCell(cells[j]));
 								}
 							}
 						}
@@ -134,10 +133,10 @@ public class DataBookJsonWriter
 				
 				// TODO serialize plot
 			}
-			else if(x instanceof Undefined)
-			{
-				// do not write out
-			}
+            // else if(x instanceof Undefined)
+            // {
+            // // do not write out
+            // }
 			else if(x instanceof Component)
 			{
 				// do not write

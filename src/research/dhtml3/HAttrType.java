@@ -1,7 +1,7 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package research.dhtml3;
 import goryachev.common.util.html.HtmlTools;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import java.awt.Color;
 
 
@@ -11,7 +11,7 @@ public enum HAttrType
 	{
 		public String parseValue(Object x)
 		{
-			Color c = JsUtil.parseColor(x);
+			Color c = SymjaUtil.parseColor(x);
 			return HtmlTools.color(c);
 		}
 	},

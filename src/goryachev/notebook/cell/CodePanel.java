@@ -7,7 +7,7 @@ import goryachev.notebook.DataBook;
 import goryachev.notebook.Styles;
 import goryachev.notebook.icons.NotebookIcons;
 import goryachev.notebook.image.JImageViewer;
-import goryachev.notebook.js.JsError;
+import goryachev.notebook.symja.SymjaError;
 import goryachev.swing.CBorder;
 import goryachev.swing.CMenuItem;
 import goryachev.swing.Theme;
@@ -291,7 +291,7 @@ public class CodePanel
 		
 		results.add(v);
 		
-		if(v instanceof JsError)
+		if(v instanceof SymjaError)
 		{
 			error = true;
 		}

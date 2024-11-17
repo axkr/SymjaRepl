@@ -2,8 +2,8 @@
 package goryachev.notebook.js.classes;
 import goryachev.common.util.Keep;
 import goryachev.common.util.RFileFilter;
-import goryachev.notebook.js.JsUtil;
 import goryachev.notebook.js.fs.FileSyncToolUI;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.swing.UI;
 import java.io.File;
 import javax.swing.JComponent;
@@ -58,46 +58,46 @@ public class JsFileSyncTool
 	
 	public void addSource(Object file)
 	{
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		tool().addSource(f);
 	}
 	
 	
 	public void addSource(Object source, Object filter) throws Exception
 	{
-		File src = JsUtil.parseFile(source);
-		RFileFilter f = JsUtil.parseRFileFilter(filter);
+		File src = SymjaUtil.parseFile(source);
+		RFileFilter f = SymjaUtil.parseRFileFilter(filter);
 		tool().addSource(src, f);
 	}
 	
 	
 	public void addJob(Object source, Object target)
 	{
-		File src = JsUtil.parseFile(source);
-		File dst = JsUtil.parseFile(target);
+		File src = SymjaUtil.parseFile(source);
+		File dst = SymjaUtil.parseFile(target);
 		tool().addJob(src, dst);
 	}
 	
 	
 	public void addJob(Object source, Object target, Object filter) throws Exception
 	{
-		File src = JsUtil.parseFile(source);
-		File dst = JsUtil.parseFile(target);
-		RFileFilter f = JsUtil.parseRFileFilter(filter);
+		File src = SymjaUtil.parseFile(source);
+		File dst = SymjaUtil.parseFile(target);
+		RFileFilter f = SymjaUtil.parseRFileFilter(filter);
 		tool().addJob(src, dst, f);
 	}
 	
 	
 	public void setTarget(Object file)
     {
-		File f = JsUtil.parseFile(file);
+		File f = SymjaUtil.parseFile(file);
 		tool().setTarget(f);
     }
 	
 	
 	public void setFilter(Object filter) throws Exception
 	{
-		RFileFilter ff = JsUtil.parseRFileFilter(filter);
+		RFileFilter ff = SymjaUtil.parseRFileFilter(filter);
 		tool().setFileFilter(ff);
 	}
 

@@ -15,8 +15,8 @@ public class ContactSupport
 	{
 		try
 		{
-			String email = RNotebookApp.SUPPORT_EMAIL;
-			String subject = "Question about " + RNotebookApp.getTitle() + " ver. " + RNotebookApp.getVersion();
+			String email = SymjaNotebookApp.SUPPORT_EMAIL;
+			String subject = "Question about " + SymjaNotebookApp.getTitle() + " ver. " + SymjaNotebookApp.getVersion();
 			MailTools.mail(email, subject, body);
 		}
 		catch(Exception e)

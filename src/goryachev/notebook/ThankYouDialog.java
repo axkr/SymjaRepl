@@ -46,7 +46,7 @@ public class ThankYouDialog
 			"Our engineers and testers spent countless hours making sure the product works, and works right.  " +
 			"Should you, however, find that something is not working right, or can be improved — do not hesitate to tell us.  " +
 			"\n\n" + 
-			TXT.get("ThankYouDialog.thank you.4", "You can reach us at {0}", RNotebookApp.SUPPORT_EMAIL)
+			TXT.get("ThankYouDialog.thank you.4", "You can reach us at {0}", SymjaNotebookApp.SUPPORT_EMAIL)
 			;
 		
 		infoField = new InfoField(text, 0);

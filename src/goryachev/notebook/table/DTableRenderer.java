@@ -1,20 +1,18 @@
 // Copyright © 2006-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.table;
-import goryachev.common.log.Log;
-import goryachev.notebook.Styles;
-import goryachev.notebook.js.JsUtil;
-import goryachev.notebook.util.NBUtil;
-import goryachev.swing.CAlignment;
-import goryachev.swing.Theme;
-import goryachev.swing.UI;
-import goryachev.swing.table.CTableRendererBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import org.mozilla.javascript.IdScriptableObject;
+import goryachev.common.log.Log;
+import goryachev.notebook.Styles;
+import goryachev.notebook.util.NBUtil;
+import goryachev.swing.CAlignment;
+import goryachev.swing.Theme;
+import goryachev.swing.UI;
+import goryachev.swing.table.CTableRendererBorder;
 
 
 // TODO date/time colors, boolean
@@ -35,7 +33,8 @@ public class DTableRenderer
 	}
 	
 
-	public Component getTableCellRendererComponent(JTable t, Object val, boolean sel, boolean focus, int row, int col)
+	@Override
+  public Component getTableCellRendererComponent(JTable t, Object val, boolean sel, boolean focus, int row, int col)
 	{
 		try
 		{
@@ -88,10 +87,10 @@ public class DTableRenderer
 			CAlignment alignment;
 			Color fg;
 			
-			if(val instanceof IdScriptableObject)
-			{
-				val = JsUtil.decodeIdScriptableObject((IdScriptableObject)val);
-			}
+            // if(val instanceof IdScriptableObject)
+            // {
+            // val = JsUtil.decodeIdScriptableObject((IdScriptableObject)val);
+            // }
 			
 			if(val instanceof Number)
 			{

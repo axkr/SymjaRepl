@@ -2,7 +2,7 @@
 package goryachev.notebook.js.ut;
 import goryachev.common.util.Base64;
 import goryachev.common.util.Hex;
-import goryachev.notebook.js.JsUtil;
+import goryachev.notebook.symja.SymjaUtil;
 import goryachev.notebook.util.Arg;
 import goryachev.notebook.util.DigestTools;
 import goryachev.notebook.util.Doc;
@@ -92,9 +92,9 @@ public class UT
 	{
 		MessageDigest d = MessageDigest.getInstance(alg);
 		
-		if(JsUtil.isConvertableToByteArray(x))
+		if(SymjaUtil.isConvertableToByteArray(x))
 		{
-			byte[] b = JsUtil.parseByteArray(x);
+			byte[] b = SymjaUtil.parseByteArray(x);
 			return DigestTools.compute(d, b);
 		}
 		else

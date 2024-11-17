@@ -1,24 +1,21 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.cell;
-import goryachev.notebook.Styles;
-import goryachev.notebook.image.JImageViewer;
-import goryachev.notebook.js.JsError;
-import goryachev.notebook.js.JsUtil;
-import goryachev.notebook.js.classes.DPlot;
-import goryachev.notebook.js.classes.DTable;
-import goryachev.notebook.js.classes.JImage;
-import goryachev.notebook.js.classes.JImageBuilder;
-import goryachev.notebook.js.os.ProcessMonitor;
-import goryachev.notebook.plot.DPlotViewer;
-import goryachev.notebook.table.DTableViewer;
-import goryachev.swing.Theme;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.NativeJavaObject;
-import org.mozilla.javascript.Undefined;
+import org.matheclipse.image.expression.data.ImageExpr;
+import goryachev.notebook.Styles;
+import goryachev.notebook.image.JImageViewer;
+import goryachev.notebook.js.classes.DPlot;
+import goryachev.notebook.js.classes.DTable;
+import goryachev.notebook.js.classes.JImage;
+import goryachev.notebook.js.classes.JImageBuilder;
+import goryachev.notebook.plot.DPlotViewer;
+import goryachev.notebook.symja.SymjaError;
+import goryachev.notebook.symja.SymjaUtil;
+import goryachev.notebook.table.DTableViewer;
+import goryachev.swing.Theme;
 
 
 public class Results
@@ -30,11 +27,13 @@ public class Results
 	 */
 	public static Object copyValue(Object x)
 	{
-		if(x instanceof NativeJavaObject)
-		{
-			x = ((NativeJavaObject)x).unwrap();
-		}
-		
+      // if(x instanceof NativeJavaObject)
+      // {
+      // x = ((NativeJavaObject)x).unwrap();
+      // }
+      if (x instanceof ImageExpr) {
+        return ((ImageExpr) x).getBufferedImage();
+      }
 		if(x instanceof JImage)
 		{
 			return ((JImage)x).getBufferedImage();
@@ -53,26 +52,26 @@ public class Results
 		}
 		else if(x instanceof Throwable)
 		{
-			String msg = JsUtil.decodeException((Throwable)x);
-			return new JsError(msg);
+			String msg = SymjaUtil.decodeException((Throwable)x);
+			return new SymjaError(msg);
 		}
-		else if(x instanceof Undefined)
-		{
-			return x;
-		}
+        // else if(x instanceof Undefined)
+        // {
+        // return x;
+        // }
 		else if(x instanceof JComponent)
 		{
 			return x;
 		}
-		else if(x instanceof ProcessMonitor)
-		{
-			ProcessMonitor m = (ProcessMonitor)x;
-			return new Object[]
-			{
-				m.stdout.getBuffer(),
-				m.stderr.getError()
-			};
-		}
+        // else if(x instanceof ProcessMonitor)
+        // {
+        // ProcessMonitor m = (ProcessMonitor)x;
+        // return new Object[]
+        // {
+        // m.stdout.getBuffer(),
+        // m.stderr.getError()
+        // };
+        // }
 		else if(x != null)
 		{
 			return x.toString();
@@ -99,9 +98,9 @@ public class Results
 			v.addMouseListener(p.handler);
 			return v;
 		}
-		else if(x instanceof JsError)
+		else if(x instanceof SymjaError)
 		{
-			String text = ((JsError)x).error;
+			String text = ((SymjaError)x).error;
 			return createTextViewer(p, text, Styles.errorColor);
 		}
 		else if(x instanceof DTable)
@@ -112,11 +111,11 @@ public class Results
 		{
 			return new DPlotViewer((DPlot)x, p.handler);
 		}
-		else if(x == Context.getUndefinedValue())
-		{
-			// do not show undefined value
-			return null;
-		}
+        // else if(x == Context.getUndefinedValue())
+        // {
+        // // do not show undefined value
+        // return null;
+        // }
 		else if(x instanceof JComponent)
 		{
 			return (JComponent)x;

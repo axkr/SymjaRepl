@@ -21,7 +21,7 @@ public class About
 		b.a("Version").sp().a(Application.getVersion()).nl();
 		b.a(Application.getCopyright()).nl(2);
 		
-		b.link(RNotebookApp.WEB_SITE);
+		b.link(SymjaNotebookApp.WEB_SITE);
 		
 		AboutDialog d = new AboutDialog(parent);
 		d.setLogo(NotebookIcons.Logo);

@@ -11,14 +11,15 @@ import goryachev.swing.dialogs.CheckForUpdatesDialog;
 public class HelpMenu
 	extends CMenu
 {
-	public final CAction checkForUpdatesAction = new CAction() { public void action() { actionCheckForUpdates(); }};
+	public final CAction checkForUpdatesAction = new CAction() { @Override
+  public void action() { actionCheckForUpdates(); }};
 
 	
 	public HelpMenu()
 	{
 		super(Menus.Help);
 		add(new CMenuItem(Menus.ContactSupport, ContactSupport.action));
-		add(new CMenuItem(Menus.CheckForUpdates, checkForUpdatesAction));
+        // add(new CMenuItem(Menus.CheckForUpdates, checkForUpdatesAction));
 		addSeparator();
 		add(new CMenuItem(Menus.License, Application.licenseAction()));
 		add(new CMenuItem(Menus.OpenSourceLicenses, OpenSourceLicenses.openDialogAction));
@@ -29,6 +30,6 @@ public class HelpMenu
 	
 	public void actionCheckForUpdates()
 	{
-		new CheckForUpdatesDialog(this, RNotebookApp.getUpdateURL(true), RNotebookApp.WEB_SITE).open();
+		new CheckForUpdatesDialog(this, SymjaNotebookApp.getUpdateURL(true), SymjaNotebookApp.WEB_SITE).open();
 	}
 }

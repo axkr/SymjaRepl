@@ -1,5 +1,8 @@
 // Copyright © 2014-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook;
+import java.awt.Component;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.jsoup.Jsoup;
 import goryachev.common.util.CKit;
 import goryachev.i18n.Menus;
 import goryachev.json.gson.JsonReader;
@@ -8,15 +11,12 @@ import goryachev.swing.CAction;
 import goryachev.swing.dialogs.license.MultiPageDialog;
 import goryachev.swing.img.jhlabs.PixelUtils;
 import goryachev.swing.img.mortennobel.Lanczos3Filter;
-import java.awt.Component;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.jsoup.Jsoup;
-import org.mozilla.javascript.RhinoException;
 
 
 public class OpenSourceLicenses
 {
-	public static final CAction openDialogAction = new CAction() { public void action() { actionLicense(getSourceWindow()); } };
+	public static final CAction openDialogAction = new CAction() { @Override
+  public void action() { actionLicense(getSourceWindow()); } };
 	
 	
 	private static void licenses(MultiPageDialog d)
@@ -44,7 +44,7 @@ public class OpenSourceLicenses
 		//d.addPage("metadata-extractor", CKit.readStringQuiet(OpenSourceLicenses.class, "drewnoakes metadata-extractor license.txt"));
 		
 		// mozilla rhino
-		d.addPage("Mozilla Rhino", CKit.readStringQuiet(RhinoException.class, "LICENSE.txt"));
+        // d.addPage("Mozilla Rhino", CKit.readStringQuiet(RhinoException.class, "LICENSE.txt"));
 		
 		// http://fifesoft.com/rsyntaxtextarea/
 		d.addPage("RSyntaxTextArea", CKit.readStringQuiet(RSyntaxTextArea.class, "RSyntaxTextArea.License.txt"));
