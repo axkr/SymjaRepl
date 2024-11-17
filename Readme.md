@@ -1,13 +1,12 @@
-﻿# RNotebook
+﻿# SymjaNotebook
 
-This was one of my research projects form 2014, similar to Jupyter notebook (back then known as IPython),
-implemented as a Java Swing application.  The notebook used Mozilla Rhino Javascript engine which allowed
-for intermixing javascript code and java objects.
-
-![screenshot](https://raw.githubusercontent.com/andy-goryachev/RNotebook/main/screenshots/2015-0107-182509-846.png)
+This is a [Symja notebook interface](https://github.com/axkr/symja_android_library) similar to Jupyter notebook, implemented as a Java Swing application. 
 
 
-## Build
+![screenshot](https://raw.githubusercontent.com/axkr/SymjaNotebook/main/screenshots/SymjaNotebook.png)
 
-Run `ant` command in the project root directory.
+
+## Getting started
+
+Load the project into the Eclipse IDE and run the main App `goryachev.notebook.SymjaNotebookApp`
 
