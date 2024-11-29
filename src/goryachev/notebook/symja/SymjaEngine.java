@@ -1,6 +1,7 @@
 // Copyright © 2015-2023 Andy Goryachev <andy@goryachev.com>
 package goryachev.notebook.symja;
 
+import java.awt.Desktop;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.basic.ToggleFeature;
@@ -52,9 +53,9 @@ public class SymjaEngine {
     S.ListLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogPlot());
     S.ListLogLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogLogPlot());
 
-    S.ListPlot.setEvaluator(new org.matheclipse.image.bridge.fig.ListPlot());
-    S.Histogram.setEvaluator(new org.matheclipse.image.bridge.fig.Histogram());
-    S.Plot.setEvaluator(new org.matheclipse.image.bridge.fig.Plot());
+    // S.ListPlot.setEvaluator(new org.matheclipse.image.bridge.fig.ListPlot());
+    // S.Histogram.setEvaluator(new org.matheclipse.image.bridge.fig.Histogram());
+    // S.Plot.setEvaluator(new org.matheclipse.image.bridge.fig.Plot());
   }
 
   private final NotebookPanel np;
@@ -161,6 +162,14 @@ public class SymjaEngine {
 
           IExpr rv = evaluator.eval(script);
 
+          if (Desktop.isDesktopSupported()) {
+            IExpr outExpr = rv;
+            if (rv.isAST(S.Graphics) //
+                || rv.isAST(F.Graphics3D)) {
+              outExpr = F.Show(outExpr);
+            }
+            String html = F.show(outExpr);
+          }
           // "line " produces an error message like "line #5"
           // Object rv = cx.evaluateString(scope(cx), script, "line ", 1, null);
           display(rv);
