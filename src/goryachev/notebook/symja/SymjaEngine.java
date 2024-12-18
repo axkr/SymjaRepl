@@ -9,6 +9,7 @@ import org.matheclipse.core.eval.EvalEngine;
 import org.matheclipse.core.eval.ExprEvaluator;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.expression.S;
+import org.matheclipse.core.form.Documentation;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.gpl.numbertheory.BigIntegerPrimality;
 import org.matheclipse.image.builtin.ImageFunctions;
@@ -160,6 +161,14 @@ public class SymjaEngine {
           engineRef.set(SymjaEngine.this);
           codePanelRef.set(p);
 
+          if (script.startsWith("?")) {
+            EvalEngine.setReset(evaluator.getEvalEngine());
+            // print "Usage" or built-in help
+            String name = script.trim();
+            IExpr doc = Documentation.findDocumentation(name);
+            display(doc);
+            return;
+          }
           IExpr rv = evaluator.eval(script);
 
           if (Desktop.isDesktopSupported()) {

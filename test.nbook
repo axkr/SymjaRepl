@@ -3,7 +3,7 @@
   "version": 1,
   "cells": [
     {
-      "type": "js",
+      "type": "m",
       "source": "10!",
       "sequence": 3,
       "output": [
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "D[Sin[x],x]",
       "sequence": 7,
       "output": [
@@ -29,7 +29,7 @@
       "source": "This is a head\ndksjflkjsd"
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "101!",
       "sequence": 5,
       "output": [
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "2^16-3//PrimeQ",
       "sequence": 8,
       "output": [
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Derivative[0,0,0,n][Hypergeometric2F1Regularized]",
       "sequence": 10,
       "output": [
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Integrate[Tan[x]^3,x]",
       "sequence": 11,
       "output": [
@@ -73,7 +73,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Hypergeometric1F1[3,b,z]",
       "sequence": 11,
       "output": [
@@ -84,7 +84,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "ListLogPlot[Table[PartitionsQ[n], {n, 50}]]",
       "sequence": 11,
       "output": [
@@ -95,7 +95,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "ListLogLogPlot[Range[20]^3]",
       "sequence": 12,
       "output": [
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "ListLogLogPlot[{Range[20], Sqrt[Range[20]], Log[Range[20]]}, \n Joined -> True, PlotLegends -> {\"one\", \"two\", \"three\"}]",
       "sequence": 13,
       "output": [
@@ -117,7 +117,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Plot[Sin[x], {x, 0, 6 Pi}]",
       "sequence": 14,
       "output": [
@@ -128,7 +128,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Plot[{Sin[x], Sin[2 x], Sin[3 x]}, {x, 0, 2 Pi}, \n PlotLegends -> \"Expressions\"]",
       "sequence": 15,
       "output": [
@@ -139,7 +139,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Plot[Sin[30 Sin[x]], {x, 0, 10}]",
       "sequence": 16,
       "output": [
@@ -150,7 +150,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Plot[Sqrt[x], {x, -1, 1}]",
       "sequence": 17,
       "output": [
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": "Histogram[RandomVariate[NormalDistribution[0, 1], 200]]",
       "sequence": 18,
       "output": [
@@ -172,7 +172,7 @@
       ]
     },
     {
-      "type": "js",
+      "type": "m",
       "source": ""
     }
   ]

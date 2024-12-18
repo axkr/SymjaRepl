@@ -7,7 +7,7 @@ public class Schema
 	public static final String TYPE = "ResearchNotebook";
 	public static final int VERSION = 1;
 
-	public static final String CELL_TYPE_CODE = "js";
+    public static final String CELL_TYPE_CODE = "m";
 	public static final String CELL_TYPE_H1 = "h1";
 	public static final String CELL_TYPE_H2 = "h2";
 	public static final String CELL_TYPE_H3 = "h3";
