@@ -196,6 +196,7 @@ public class SymjaEngine {
           displayPrivate(p, new SymjaError(oome.getMessage()));
         } finally {
           codePanelRef.set(null);
+          engineRef.set(null);
           // Context.exit();
 
           executeOnFinishCallbacks();
