@@ -1,0 +1,63 @@
+{
+  "type": "ResearchNotebook",
+  "version": 1,
+  "cells": [
+    {
+      "type": "m",
+      "source": "<<\"https://raw.githubusercontent.com/szhorvat/BoolEval/master/BoolEval/BoolEval.m\"",
+      "output": [
+        {
+          "type": "text",
+          "text": "Null"
+        }
+      ]
+    },
+    {
+      "type": "m",
+      "source": "array=Range[10]",
+      "output": [
+        {
+          "type": "text",
+          "text": "{1,2,3,4,5,6,7,8,9,10}"
+        }
+      ]
+    },
+    {
+      "type": "m",
+      "source": "BoolEval[array>3]",
+      "sequence": 1,
+      "output": [
+        {
+          "type": "text",
+          "text": "{0,0,0,1,1,1,1,1,1,1}"
+        }
+      ]
+    },
+    {
+      "type": "m",
+      "source": "BoolPick[array,array>3]",
+      "sequence": 2,
+      "output": [
+        {
+          "type": "text",
+          "text": "{4,5,6,7,8,9,10}"
+        }
+      ]
+    },
+    {
+      "type": "m",
+      "source": "BoolPick[array, Mod[array,3] == 1 && array<5]",
+      "sequence": 3,
+      "output": [
+        {
+          "type": "text",
+          "text": "{1,4}"
+        }
+      ]
+    },
+    {
+      "type": "m",
+      "source": ""
+    }
+  ]
+}
