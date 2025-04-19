@@ -4,8 +4,8 @@
   "cells": [
     {
       "type": "m",
-      "source": "<<\"https://raw.githubusercontent.com/Mathics3/Mathics3-Combinatorica/refs/heads/master/Combinatorica/CombinatoricaV2.0.0.m\"",
-      "sequence": 80,
+      "source": "<<\"https://raw.githubusercontent.com/Mathics3/Mathics3-Combinatorica/refs/heads/master/Combinatorica/CombinatoricaV201.m\t\n\"",
+      "sequence": 143,
       "output": [
         {
           "type": "text",
@@ -16,7 +16,7 @@
     {
       "type": "m",
       "source": "Permutations[3]",
-      "sequence": 81,
+      "sequence": 144,
       "output": [
         {
           "type": "text",
@@ -27,7 +27,7 @@
     {
       "type": "m",
       "source": "Permute[{A, B, C, D}, Permutations[3]]",
-      "sequence": 82,
+      "sequence": 145,
       "output": [
         {
           "type": "text",
@@ -38,7 +38,7 @@
     {
       "type": "m",
       "source": "Permute[{5, 2, 4, 3, 1}, InversePermutation[{5, 2, 4, 3, 1}]]",
-      "sequence": 83,
+      "sequence": 146,
       "output": [
         {
           "type": "text",
@@ -49,7 +49,7 @@
     {
       "type": "m",
       "source": "MinimumChangePermutations[{a, b, c}]",
-      "sequence": 84,
+      "sequence": 147,
       "output": [
         {
           "type": "text",
@@ -60,7 +60,7 @@
     {
       "type": "m",
       "source": "RankPermutation[{8, 9, 7, 1, 6, 4, 5, 3, 2}]",
-      "sequence": 85,
+      "sequence": 148,
       "output": [
         {
           "type": "text",
@@ -71,7 +71,7 @@
     {
       "type": "m",
       "source": "UnrankPermutation[321953, 9]",
-      "sequence": 86,
+      "sequence": 149,
       "output": [
         {
           "type": "text",
@@ -82,7 +82,7 @@
     {
       "type": "m",
       "source": "UnrankPermutation[0, 9]",
-      "sequence": 87,
+      "sequence": 150,
       "output": [
         {
           "type": "text",
@@ -93,7 +93,7 @@
     {
       "type": "m",
       "source": "p=RandomPermutation[50];",
-      "sequence": 88,
+      "sequence": 151,
       "output": [
         {
           "type": "text",
@@ -104,7 +104,7 @@
     {
       "type": "m",
       "source": "Inversions[p] == Inversions[InversePermutation[p]]",
-      "sequence": 89,
+      "sequence": 152,
       "output": [
         {
           "type": "text",
@@ -115,7 +115,7 @@
     {
       "type": "m",
       "source": "NecklacePolynomial[6, {a, b, c}, Cyclic]",
-      "sequence": 90,
+      "sequence": 153,
       "output": [
         {
           "type": "text",
@@ -126,7 +126,7 @@
     {
       "type": "m",
       "source": "Subsets[{1,2,3,4}]",
-      "sequence": 91,
+      "sequence": 154,
       "output": [
         {
           "type": "text",
@@ -137,7 +137,7 @@
     {
       "type": "m",
       "source": "KSubsets[{1,2,3,4,5}, 3]",
-      "sequence": 92,
+      "sequence": 155,
       "output": [
         {
           "type": "text",
@@ -148,7 +148,7 @@
     {
       "type": "m",
       "source": "Compositions[5, 3]",
-      "sequence": 93,
+      "sequence": 156,
       "output": [
         {
           "type": "text",
@@ -159,7 +159,7 @@
     {
       "type": "m",
       "source": "SetPartitions[3]",
-      "sequence": 94,
+      "sequence": 157,
       "output": [
         {
           "type": "text",
@@ -170,7 +170,7 @@
     {
       "type": "m",
       "source": "Tableaux[{2,2,1}]",
-      "sequence": 95,
+      "sequence": 158,
       "output": [
         {
           "type": "text",
@@ -181,7 +181,7 @@
     {
       "type": "m",
       "source": "p = {5,9,1,8,2,6,4,7,3}; ToInversionVector[p]",
-      "sequence": 96,
+      "sequence": 159,
       "output": [
         {
           "type": "text",
@@ -192,7 +192,7 @@
     {
       "type": "m",
       "source": "FromInversionVector[ToInversionVector[p]]",
-      "sequence": 97,
+      "sequence": 160,
       "output": [
         {
           "type": "text",
@@ -203,7 +203,7 @@
     {
       "type": "m",
       "source": "h = InversePermutation[p]; g = MakeGraph[Range[Length[p]], ((#1<#2 && h[[#1]]>h[[#2]]) || (#1>#2 && h[[#1]]<h[[#2]]))&];Inversions[p]",
-      "sequence": 98,
+      "sequence": 161,
       "output": [
         {
           "type": "text",
@@ -214,7 +214,7 @@
     {
       "type": "m",
       "source": "Inversions[p]",
-      "sequence": 99,
+      "sequence": 162,
       "output": [
         {
           "type": "text",
@@ -225,7 +225,7 @@
     {
       "type": "m",
       "source": "Inversions[Reverse[Range[8]]]",
-      "sequence": 100,
+      "sequence": 163,
       "output": [
         {
           "type": "text",
@@ -236,7 +236,7 @@
     {
       "type": "m",
       "source": "Binomial[8,2]",
-      "sequence": 101,
+      "sequence": 164,
       "output": [
         {
           "type": "text",
@@ -247,7 +247,7 @@
     {
       "type": "m",
       "source": "Union [ Map[Inversions, Permutations[Range[4]]] ]",
-      "sequence": 102,
+      "sequence": 165,
       "output": [
         {
           "type": "text",
@@ -258,7 +258,7 @@
     {
       "type": "m",
       "source": "p = RandomPermutation[6]; Inversions[p] + Inversions[Reverse[p]]",
-      "sequence": 103,
+      "sequence": 166,
       "output": [
         {
           "type": "text",
@@ -269,7 +269,7 @@
     {
       "type": "m",
       "source": "Binomial[Length[p], 2]",
-      "sequence": 104,
+      "sequence": 167,
       "output": [
         {
           "type": "text",
@@ -280,7 +280,7 @@
     {
       "type": "m",
       "source": "Select[Permutations[Range[4]], (Inversions[#]==3)&]",
-      "sequence": 105,
+      "sequence": 168,
       "output": [
         {
           "type": "text",
@@ -291,7 +291,7 @@
     {
       "type": "m",
       "source": "Select[Permutations[Range[4]], (Length[Runs[#]]==2)&]",
-      "sequence": 106,
+      "sequence": 169,
       "output": [
         {
           "type": "text",
@@ -302,7 +302,7 @@
     {
       "type": "m",
       "source": "Eulerian[4,2]",
-      "sequence": 107,
+      "sequence": 170,
       "output": [
         {
           "type": "text",
@@ -313,7 +313,7 @@
     {
       "type": "m",
       "source": "Map[ ToCycles, Select[ Permutations[Range[4]], InvolutionQ ] ]",
-      "sequence": 108,
+      "sequence": 171,
       "output": [
         {
           "type": "text",
@@ -324,7 +324,7 @@
     {
       "type": "m",
       "source": "NumberOfInvolutions[4]",
-      "sequence": 109,
+      "sequence": 172,
       "output": [
         {
           "type": "text",
@@ -335,7 +335,7 @@
     {
       "type": "m",
       "source": "Table[NumberOfDerangements[i], {i, 1, 10}]",
-      "sequence": 110,
+      "sequence": 173,
       "output": [
         {
           "type": "text",
@@ -346,7 +346,7 @@
     {
       "type": "m",
       "source": "Table[ N[ NumberOfDerangements[i]/(i!) ], {i, 1, 10} ]",
-      "sequence": 111,
+      "sequence": 174,
       "output": [
         {
           "type": "text",
@@ -357,7 +357,7 @@
     {
       "type": "m",
       "source": "Table[Round[n!/N[E]], {n, 1, 10}]",
-      "sequence": 112,
+      "sequence": 175,
       "output": [
         {
           "type": "text",
@@ -368,7 +368,7 @@
     {
       "type": "m",
       "source": "Josephus[17, 7]",
-      "sequence": 113,
+      "sequence": 176,
       "output": [
         {
           "type": "text",
@@ -379,7 +379,7 @@
     {
       "type": "m",
       "source": "HeapSort[Reverse[Range[10]]]",
-      "sequence": 114,
+      "sequence": 177,
       "output": [
         {
           "type": "text",
@@ -390,7 +390,7 @@
     {
       "type": "m",
       "source": "HeapSort[RandomPermutation[10]]",
-      "sequence": 115,
+      "sequence": 178,
       "output": [
         {
           "type": "text",
@@ -401,7 +401,7 @@
     {
       "type": "m",
       "source": "Strings[Range[3], 3]",
-      "sequence": 116,
+      "sequence": 179,
       "output": [
         {
           "type": "text",
@@ -412,7 +412,7 @@
     {
       "type": "m",
       "source": "BinarySubsets[{a,b,c,d}]",
-      "sequence": 117,
+      "sequence": 180,
       "output": [
         {
           "type": "text",
@@ -423,7 +423,7 @@
     {
       "type": "m",
       "source": "Table[NthSubset[n, {a,b,c,d}], {n, 0, 15}]",
-      "sequence": 118,
+      "sequence": 181,
       "output": [
         {
           "type": "text",
@@ -434,7 +434,7 @@
     {
       "type": "m",
       "source": "NthSubset[-10, {a, b, c, d}]",
-      "sequence": 119,
+      "sequence": 182,
       "output": [
         {
           "type": "text",
@@ -445,7 +445,7 @@
     {
       "type": "m",
       "source": "Map[ (RankSubset[Range[4], #])&, BinarySubsets[Range[4]] ]",
-      "sequence": 120,
+      "sequence": 183,
       "output": [
         {
           "type": "text",
@@ -456,7 +456,7 @@
     {
       "type": "m",
       "source": "Range[0, 15]",
-      "sequence": 121,
+      "sequence": 184,
       "output": [
         {
           "type": "text",
@@ -467,7 +467,7 @@
     {
       "type": "m",
       "source": "GrayCode[Range[4]]",
-      "sequence": 122,
+      "sequence": 185,
       "output": [
         {
           "type": "text",
@@ -478,7 +478,7 @@
     {
       "type": "m",
       "source": "LexicographicSubsets[Range[4]]",
-      "sequence": 123,
+      "sequence": 186,
       "output": [
         {
           "type": "text",
@@ -489,7 +489,7 @@
     {
       "type": "m",
       "source": "KSubsets[Range[3], 0]",
-      "sequence": 124,
+      "sequence": 187,
       "output": [
         {
           "type": "text",
@@ -500,7 +500,7 @@
     {
       "type": "m",
       "source": "KSubsets[Range[5], 1]",
-      "sequence": 125,
+      "sequence": 188,
       "output": [
         {
           "type": "text",
@@ -511,7 +511,7 @@
     {
       "type": "m",
       "source": "KSubsets[Range[5], 3]",
-      "sequence": 126,
+      "sequence": 189,
       "output": [
         {
           "type": "text",
@@ -522,7 +522,7 @@
     {
       "type": "m",
       "source": "KSubsets[Range[5], 5]",
-      "sequence": 127,
+      "sequence": 190,
       "output": [
         {
           "type": "text",
@@ -533,7 +533,7 @@
     {
       "type": "m",
       "source": "PartitionsP[10]",
-      "sequence": 128,
+      "sequence": 191,
       "output": [
         {
           "type": "text",
@@ -544,7 +544,7 @@
     {
       "type": "m",
       "source": "NumberOfPartitions[10]",
-      "sequence": 129,
+      "sequence": 192,
       "output": [
         {
           "type": "text",
@@ -555,7 +555,7 @@
     {
       "type": "m",
       "source": "NumberOfCompositions[6,3]",
-      "sequence": 130,
+      "sequence": 193,
       "output": [
         {
           "type": "text",
@@ -566,7 +566,7 @@
     {
       "type": "m",
       "source": "TableauQ[{{1,2,5}, {3,4,5}, {6}}]",
-      "sequence": 131,
+      "sequence": 194,
       "output": [
         {
           "type": "text",
@@ -577,7 +577,7 @@
     {
       "type": "m",
       "source": "TableauQ[{{1,2,5,9,10}, {5,4,7,13}, {4,8,12},{11}}]",
-      "sequence": 132,
+      "sequence": 195,
       "output": [
         {
           "type": "text",
@@ -588,7 +588,7 @@
     {
       "type": "m",
       "source": "Permute[{A, B, C, D}, Permutations[Range[3]]]",
-      "sequence": 133,
+      "sequence": 196,
       "output": [
         {
           "type": "text",
@@ -599,7 +599,7 @@
     {
       "type": "m",
       "source": "Subsets[Range[3]]",
-      "sequence": 134,
+      "sequence": 197,
       "output": [
         {
           "type": "text",
@@ -610,7 +610,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{2, 3, 9}, 7] // N",
-      "sequence": 135,
+      "sequence": 198,
       "output": [
         {
           "type": "text",
@@ -621,7 +621,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{3, 4, 10, 100, 123}, 100]",
-      "sequence": 136,
+      "sequence": 199,
       "output": [
         {
           "type": "text",
@@ -632,7 +632,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{2, 3, 9}, 7] // N",
-      "sequence": 137,
+      "sequence": 200,
       "output": [
         {
           "type": "text",
@@ -643,7 +643,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{2, 7, 9, 10}, 3] // N",
-      "sequence": 138,
+      "sequence": 201,
       "output": [
         {
           "type": "text",
@@ -654,7 +654,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{-10, 5, 8, 10}, -100] // N",
-      "sequence": 139,
+      "sequence": 202,
       "output": [
         {
           "type": "text",
@@ -665,7 +665,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{-10, 5, 8, 10}, 20] // N",
-      "sequence": 140,
+      "sequence": 203,
       "output": [
         {
           "type": "text",
@@ -676,7 +676,7 @@
     {
       "type": "m",
       "source": "BinarySearch[{{a, 1}, {b, 7}}, 7, #[[2]]&]",
-      "sequence": 141,
+      "sequence": 204,
       "output": [
         {
           "type": "text",
@@ -687,7 +687,7 @@
     {
       "type": "m",
       "source": "SetPartitions[3]",
-      "sequence": 142,
+      "sequence": 205,
       "output": [
         {
           "type": "text",
@@ -698,7 +698,7 @@
     {
       "type": "m",
       "source": "TransposePartition[{8, 6, 4, 4, 3, 1}]",
-      "sequence": 143,
+      "sequence": 206,
       "output": [
         {
           "type": "text",
