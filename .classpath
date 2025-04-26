@@ -19,8 +19,6 @@
 	<classpathentry kind="lib" path="lib/arrow-vector-18.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/ascii-table-1.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/automaton-1.11-8.jar"/>
-	<classpathentry kind="lib" path="lib/biojava-alignment-7.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/biojava-core-7.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/choco-solver-4.10.18.jar"/>
 	<classpathentry kind="lib" path="lib/classgraph-4.8.179.jar"/>
 	<classpathentry kind="lib" path="lib/commonmark-0.24.0.jar"/>
@@ -112,13 +110,9 @@
 	<classpathentry kind="lib" path="lib/trove4j-3.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/txw2-4.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/unbescape-1.1.6.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/undertow-core-2.3.18.Final.jar"/>
-	<classpathentry kind="lib" path="lib/undertow-servlet-2.3.18.Final.jar"/>
 	<classpathentry kind="lib" path="lib/univocity-parsers-2.9.1.jar"/>
-	<classpathentry kind="lib" path="lib/wildfly-client-config-1.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="lib/wildfly-common-1.5.4.Final.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-5.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/xnio-api-3.8.16.Final.jar"/>
 	<classpathentry kind="lib" path="lib/xnio-nio-3.8.16.Final.jar"/>
-	<classpathentry kind="output" path="out"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

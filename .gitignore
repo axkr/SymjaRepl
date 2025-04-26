@@ -1,10 +1,6 @@
-/out/
-/user.home/
-/test/
-/test.out/
-/build/
 ~*
-*.log
-/*.jar
+*.settings
+*.log 
 /*.dat
 *.backup
+/bin/
