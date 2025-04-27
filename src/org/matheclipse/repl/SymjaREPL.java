@@ -3,6 +3,9 @@ package org.matheclipse.repl;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List; // Needed for process()
@@ -36,6 +39,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
   private final JTextField inputField;
   private final JScrollPane scrollPane;
   private final JButton evalButton;
+  private final JButton clearButton;
   private final JLabel statusLabel;
   private ExprEvaluator evaluator;
 
@@ -58,6 +62,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     Config.MAX_BIT_LENGTH = 200000;
     Config.MAX_POLYNOMIAL_DEGREE = 100;
     Config.FILESYSTEM_ENABLED = true;
+    Config.JAS_NO_THREADS = true;
     try {
       F.await();
     } catch (InterruptedException e) {
@@ -103,20 +108,59 @@ public class SymjaREPL extends JFrame implements ActionListener {
     scrollPane = new JScrollPane(outputArea);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    inputField = new JTextField();
+    inputField = new JTextField(80);
     inputField.setFont(new Font("Monospaced", Font.PLAIN, 12));
     // Optional: Allow Enter key in text field to trigger button
     inputField.addActionListener(this);
 
-    evalButton = new JButton("Evaluate");
+    evalButton = new JButton("Eval");
     evalButton.addActionListener(this);
+    clearButton = new JButton("Clear");
+    clearButton.addActionListener(this);
 
     statusLabel = new JLabel("Ready.");
 
     // 3. Layout
+
+    // --- Panel for the Row ---
+    JPanel rowPanel = new JPanel();
+    rowPanel.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    // --- Add Input Field ---
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    // gbc.weightx = 1.0; // This component gets all extra horizontal space
+    gbc.fill = GridBagConstraints.HORIZONTAL; // Expand the component horizontally to fill its cell
+    gbc.insets = new Insets(5, 5, 5, 5); // Add padding (top, left, bottom, right) around the
+                                         // component
+    rowPanel.add(inputField, gbc);
+
+    // --- Add Button 1 ---
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.weightx = 0.0;
+    gbc.fill = GridBagConstraints.NONE; // Do not expand the component
+    gbc.insets = new Insets(5, 0, 5, 5); // Padding: top=5, left=0 (less space next to text field),
+                                         // bottom=5, right=5
+    // gbc.anchor = GridBagConstraints.WEST; // Optional: Align button to the left within its cell
+    // if cell is larger
+    rowPanel.add(clearButton, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.weightx = 0.0; // Does not get extra horizontal space
+    gbc.fill = GridBagConstraints.NONE; // Do not expand
+    gbc.insets = new Insets(5, 0, 5, 5); // Padding: top=5, left=0, bottom=5, right=5
+    // gbc.anchor = GridBagConstraints.WEST; // Optional
+    rowPanel.add(evalButton, gbc);
+
     JPanel bottomPanel = new JPanel(new BorderLayout());
-    bottomPanel.add(inputField, BorderLayout.CENTER);
-    bottomPanel.add(evalButton, BorderLayout.EAST);
+    // bottomPanel.add(inputField, BorderLayout.CENTER);
+    // bottomPanel.add(evalButton, BorderLayout.EAST);
+    bottomPanel.add(rowPanel, BorderLayout.EAST);
     bottomPanel.add(statusLabel, BorderLayout.SOUTH); // Add status label
 
     setLayout(new BorderLayout());
@@ -151,14 +195,16 @@ public class SymjaREPL extends JFrame implements ActionListener {
   // --- ActionListener Implementation ---
   @Override
   public void actionPerformed(ActionEvent e) {
+    String actionCommand = e.getActionCommand();
+    if (actionCommand.equals("Clear")) {
+      inputField.setText("");
+      inputField.requestFocusInWindow();
+      return;
+    }
     String command = inputField.getText();
     if (command.trim().isEmpty()) {
       return;
     }
-
-    // TODO Don't clear input field immediately, user might want to edit
-    // Clear later or provide clear button
-    inputField.setText("");
 
     appendToOutput("\n>> " + command + "\n");
 
