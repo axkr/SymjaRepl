@@ -1,6 +1,7 @@
 package org.matheclipse.repl;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,10 +16,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import org.matheclipse.core.basic.Config;
 import org.matheclipse.core.basic.ToggleFeature;
 import org.matheclipse.core.eval.EvalEngine;
@@ -28,14 +34,15 @@ import org.matheclipse.core.expression.S;
 import org.matheclipse.core.form.Documentation;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.gpl.numbertheory.BigIntegerPrimality;
-import org.matheclipse.image.builtin.ImageFunctions;
 import org.matheclipse.parser.client.ParserConfig;
 import org.matheclipse.parser.client.SyntaxError;
 import org.matheclipse.parser.client.math.MathException;
 
 public class SymjaREPL extends JFrame implements ActionListener {
 
-  private final JTextArea outputArea;
+  private static final long serialVersionUID = -3157094996191084709L;
+
+  private final JTextPane outputArea;
   private final JTextField inputField;
   private final JScrollPane scrollPane;
   private final JButton evalButton;
@@ -52,7 +59,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
 
   static {
     configureLog4J();
-    ToggleFeature.COMPILE = true;
+    ToggleFeature.COMPILE = false;
     ToggleFeature.COMPILE_PRINT = true;
     ParserConfig.PARSER_USE_LOWERCASE_SYMBOLS = false;
     Config.DISABLE_JMX = true;
@@ -63,22 +70,24 @@ public class SymjaREPL extends JFrame implements ActionListener {
     Config.MAX_POLYNOMIAL_DEGREE = 100;
     Config.FILESYSTEM_ENABLED = true;
     Config.JAS_NO_THREADS = true;
+    F.initSymbols();
     try {
       F.await();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
     // set for BigInteger prime factorization
     Config.PRIME_FACTORS = new BigIntegerPrimality();
 
-    // initialize from module matheclipse-image:
-    ImageFunctions.initialize();
-
-    // S.ArrayPlot.setEvaluator(new org.matheclipse.image.builtin.ArrayPlot());
-    S.ImageCrop.setEvaluator(new org.matheclipse.image.builtin.ImageCrop());
-    S.ListDensityPlot.setEvaluator(new org.matheclipse.image.builtin.ListDensityPlot());
-    S.ListLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogPlot());
-    S.ListLogLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogLogPlot());
+    // // initialize from module matheclipse-image:
+    // ImageFunctions.initialize();
+    //
+    // // S.ArrayPlot.setEvaluator(new org.matheclipse.image.builtin.ArrayPlot());
+    // S.ImageCrop.setEvaluator(new org.matheclipse.image.builtin.ImageCrop());
+    // S.ListDensityPlot.setEvaluator(new org.matheclipse.image.builtin.ListDensityPlot());
+    // S.ListLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogPlot());
+    // S.ListLogLogPlot.setEvaluator(new org.matheclipse.image.builtin.ListLogLogPlot());
 
     // S.ListPlot.setEvaluator(new org.matheclipse.image.bridge.fig.ListPlot());
     // S.Histogram.setEvaluator(new org.matheclipse.image.bridge.fig.Histogram());
@@ -91,24 +100,35 @@ public class SymjaREPL extends JFrame implements ActionListener {
     boolean relaxedSyntax = false;
     EvalEngine engine = new EvalEngine(relaxedSyntax);
     EvalEngine.set(engine);
-    engine.init();
-    engine.setRecursionLimit(512);
-    engine.setIterationLimit(500);
-    engine.setOutListDisabled(false, (short) 10);
-
     evaluator = new ExprEvaluator(engine, false, (short) 100);
+    EvalEngine evalEngine = evaluator.getEvalEngine();
+    evalEngine.setFileSystemEnabled(true);
+    evalEngine.setRecursionLimit(Config.DEFAULT_RECURSION_LIMIT);
+    evalEngine.setIterationLimit(Config.DEFAULT_ITERATION_LIMIT);
+    evalEngine.setErrorPrintStream(System.err);
+    evalEngine.setOutPrintStream(System.out);
+
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+
+    EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
+
+    outputArea = new JTextPane();
+    outputArea.setBorder(eb);
+    // tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+    outputArea.setMargin(new Insets(5, 5, 5, 5));
 
     // 2. Setup Components
-    outputArea = new JTextArea();
-    outputArea.setEditable(false);
-    outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-    outputArea.setLineWrap(true);
-    outputArea.setWrapStyleWord(true);
+    // outputArea = new JTextArea();
+    // outputArea.setEditable(false);
+    // outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+    // outputArea.setLineWrap(true);
+    // outputArea.setWrapStyleWord(true);
 
     scrollPane = new JScrollPane(outputArea);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    inputField = new JTextField(80);
+    inputField = new JTextField(90);
     inputField.setFont(new Font("Monospaced", Font.PLAIN, 12));
     // Optional: Allow Enter key in text field to trigger button
     inputField.addActionListener(this);
@@ -130,7 +150,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     // --- Add Input Field ---
     gbc.gridx = 0;
     gbc.gridy = 0;
-    // gbc.weightx = 1.0; // This component gets all extra horizontal space
+    gbc.weightx = 1.0; // This component gets all extra horizontal space
     gbc.fill = GridBagConstraints.HORIZONTAL; // Expand the component horizontally to fill its cell
     gbc.insets = new Insets(5, 5, 5, 5); // Add padding (top, left, bottom, right) around the
                                          // component
@@ -169,21 +189,41 @@ public class SymjaREPL extends JFrame implements ActionListener {
 
     // 4. Frame Setup
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setSize(600, 450); // Slightly taller for status
+    setSize(800, 600); // Slightly taller for status
     setLocationRelativeTo(null);
 
     // Initial message
     appendToOutput("Welcome to Symja REPL!\n");
-    appendToOutput("Type commands and press Enter or click Evaluate.\n");
-    appendToOutput("--------------------------------------------------\n");
+    appendToOutput("Type math expressions like D[Sin[x]^3,x] and press Enter or click Eval.\n");
+    appendToOutput("-----------------------------------------------------------------------\n");
   }
 
   // Method to append text safely to the output area from any thread
   private void appendToOutput(String text) {
     SwingUtilities.invokeLater(() -> {
-      outputArea.append(text);
+      appendToPane(outputArea, text, Color.BLACK);
       outputArea.setCaretPosition(outputArea.getDocument().getLength());
     });
+  }
+
+  private void appendErrorToOutput(String text) {
+    SwingUtilities.invokeLater(() -> {
+      appendToPane(outputArea, text, Color.RED);
+      outputArea.setCaretPosition(outputArea.getDocument().getLength());
+    });
+  }
+
+  private void appendToPane(JTextPane tp, String msg, Color c) {
+    StyleContext sc = StyleContext.getDefaultStyleContext();
+    AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+    aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Monospaced");
+    aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+    int len = tp.getDocument().getLength();
+    tp.setCaretPosition(len);
+    tp.setCharacterAttributes(aset, false);
+    tp.replaceSelection(msg);
   }
 
   // Update status label safely from any thread
@@ -248,25 +288,32 @@ public class SymjaREPL extends JFrame implements ActionListener {
           IExpr outExpr = rv;
           if (rv.isAST(S.Graphics) //
               || rv.isAST(F.Graphics3D)) {
-            outExpr = F.Show(outExpr);
+            F.show(F.Show(outExpr));
+            return S.Null;
           }
-          String html = F.show(outExpr);
+          if (F.show(outExpr) != null) {
+            return S.Null;
+          }
         }
         return rv;
       } catch (SyntaxError se) {
         // catch Symja parser errors here
-        se.printStackTrace();
+        appendErrorToOutput(se.getMessage() + "\n");
       } catch (MathException me) {
         // catch Symja math errors here
+        appendErrorToOutput(me.getMessage() + "\n");
         me.printStackTrace();
       } catch (final Exception ex) {
+        appendErrorToOutput(ex.getMessage() + "\n");
         ex.printStackTrace();
       } catch (final StackOverflowError soe) {
+        appendErrorToOutput("StackOverflowError\n");
         soe.printStackTrace();
       } catch (final OutOfMemoryError oome) {
+        appendErrorToOutput("OutOfMemoryError\n");
         oome.printStackTrace();
       }
-      return S.Null;
+      return F.NIL;
     }
 
     // Optional: Process intermediate results published from doInBackground
@@ -274,8 +321,8 @@ public class SymjaREPL extends JFrame implements ActionListener {
     protected void process(List<String> chunks) {
       // This runs on the EDT
       // for (String status : chunks) {
-        // Example: Update a progress label or bar
-        // statusLabel.setText(status); // Could use this for finer grained progress
+      // Example: Update a progress label or bar
+      // statusLabel.setText(status); // Could use this for finer grained progress
       // }
     }
 
@@ -289,9 +336,10 @@ public class SymjaREPL extends JFrame implements ActionListener {
         Object result = get();
 
         if (result != null) {
-          appendToOutput(result.toString() + "\n");
-        } else {
-          appendToOutput("null (evaluation returned null)\n");
+          IExpr res = (IExpr) result;
+          if (res.isPresent()) {
+            appendToOutput(res.toString() + "\n");
+          }
         }
         setStatus("Evaluation finished successfully.");
 
