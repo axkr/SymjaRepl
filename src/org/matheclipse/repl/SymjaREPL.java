@@ -62,6 +62,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     ToggleFeature.COMPILE = false;
     ToggleFeature.COMPILE_PRINT = true;
     ParserConfig.PARSER_USE_LOWERCASE_SYMBOLS = false;
+    Config.CHEEPRJ = true;
     Config.DISABLE_JMX = true;
     Config.SHORTEN_STRING_LENGTH = 80;
     Config.MAX_AST_SIZE = 20000;
@@ -104,7 +105,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     EvalEngine evalEngine = evaluator.getEvalEngine();
     evalEngine.setFileSystemEnabled(true);
     evalEngine.setRecursionLimit(Config.DEFAULT_RECURSION_LIMIT);
-    evalEngine.setIterationLimit(Config.DEFAULT_ITERATION_LIMIT);
+    evalEngine.setIterationLimit(1024 * 1024);
     evalEngine.setErrorPrintStream(System.err);
     evalEngine.setOutPrintStream(System.out);
 
