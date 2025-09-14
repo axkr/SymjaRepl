@@ -10,7 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List; // Needed for process()
-import javax.script.ScriptException;
+// import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -348,9 +348,10 @@ public class SymjaREPL extends JFrame implements ActionListener {
         // Handle exceptions that occurred in doInBackground
         Throwable cause = e.getCause(); // get() wraps exceptions in ExecutionException
         String errorMessage;
-        if (cause instanceof ScriptException) {
-          errorMessage = "Script Error: " + cause.getMessage();
-        } else if (cause != null) {
+        // if (cause instanceof ScriptException) {
+        // errorMessage = "Script Error: " + cause.getMessage();
+        // } else
+        if (cause != null) {
           errorMessage = "Error: " + cause.getClass().getSimpleName() + " - " + cause.getMessage();
         } else {
           errorMessage = "Execution Error: " + e.getMessage();

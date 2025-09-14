@@ -1,0 +1,196 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>SymjaREPL</groupId>
+	<artifactId>SymjaREPL</artifactId>
+	<version>3.1.0-SNAPSHOT</version>
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+			<distribution>repo</distribution>
+			<comments>A free, copyleft license for software and other kinds of
+				works</comments>
+		</license>
+		<license>
+			<name>GNU Lesser General Public License, Version 3</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0.html</url>
+			<distribution>repo</distribution>
+			<comments>A free, copyleft license for software and other kinds of
+				works</comments>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>axkr</id>
+			<name>Axel Kramer</name>
+			<email>axelclk@gmail.com</email>
+			<organization>Symja.org</organization>
+			<organizationUrl>https://github.com/axkr</organizationUrl>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>orekit</id>
+			<url>https://packages.orekit.org/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>maven-snapshots</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
+		<release.build>false</release.build>
+		<deployment.suppress>false</deployment.suppress> <!-- child modules can
+		set this true to not be published -->
+		<guava.minimal.version>32.0</guava.minimal.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.matheclipse</groupId>
+			<artifactId>matheclipse-core</artifactId>
+			<version>3.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.matheclipse</groupId>
+			<artifactId>matheclipse-gpl</artifactId>
+			<version>3.1.0-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>${java.version}</release>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.matheclipse.repl.SymjaREPL</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.5.2</version> <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <minimizeJar>true</minimizeJar> <filters>
+                    <filter>
+                        <artifact>it.unimi.dsi:fastutil</artifact>
+                        <includes>
+                            </includes>
+                    </filter>
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>org.matheclipse.repl.SymjaREPL</mainClass>
+                    </transformer>
+                </transformers>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+<!--			<plugin>
+    <groupId>com.github.wvengen</groupId>
+    <artifactId>proguard-maven-plugin</artifactId>
+    <version>2.7.0</version>
+    <executions>
+        <execution>
+            <id>proguard-obfuscate-fatjar</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>proguard</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <injar>${project.build.finalName}-jar-with-dependencies.jar</injar>
+        <outjar>${project.build.finalName}-obfuscated.jar</outjar>
+        <obfuscate>true</obfuscate>
+        <options>
+            <option>-keep public class org.matheclipse.repl.SymjaREPL { public static void main(java.lang.String[]); }</option>
+        </options>
+        <libs>
+            <lib>${java.home}/jmods/java.base.jmod</lib>
+            <lib>${java.home}/jmods/java.desktop.jmod</lib>
+        </libs>
+    </configuration>
+</plugin>   -->
+		</plugins>
+	</build>
+</project>
