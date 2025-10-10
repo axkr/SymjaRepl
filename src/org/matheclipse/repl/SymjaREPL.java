@@ -129,6 +129,11 @@ public class SymjaREPL extends JFrame implements ActionListener {
     scrollPane = new JScrollPane(outputArea);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+    // Initial message
+    appendToOutput("Welcome to Symja REPL!\n");
+    appendToOutput("Type math expressions like D[Sin[x]^3,x] and press Enter or click Eval.\n");
+    appendToOutput("-----------------------------------------------------------------------\n");
+
     inputField = new JTextField(90);
     inputField.setFont(new Font("Monospaced", Font.PLAIN, 12));
     // Optional: Allow Enter key in text field to trigger button
@@ -193,10 +198,6 @@ public class SymjaREPL extends JFrame implements ActionListener {
     setSize(800, 600); // Slightly taller for status
     setLocationRelativeTo(null);
 
-    // Initial message
-    appendToOutput("Welcome to Symja REPL!\n");
-    appendToOutput("Type math expressions like D[Sin[x]^3,x] and press Enter or click Eval.\n");
-    appendToOutput("-----------------------------------------------------------------------\n");
   }
 
   // Method to append text safely to the output area from any thread
@@ -243,7 +244,11 @@ public class SymjaREPL extends JFrame implements ActionListener {
       return;
     }
     String command = inputField.getText();
-    if (command.trim().isEmpty()) {
+    command = command.trim();
+    if (command.length() == 0) {
+      inputField.setText("");
+      inputField.requestFocusInWindow();
+      setStatus("No input was made");
       return;
     }
 
@@ -375,6 +380,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     SwingUtilities.invokeLater(() -> {
       SymjaREPL repl = new SymjaREPL();
       repl.setVisible(true);
+      repl.inputField.requestFocusInWindow();
     });
   }
 }
