@@ -71,7 +71,7 @@ public class SymjaREPL extends JFrame implements ActionListener {
     Config.MAX_POLYNOMIAL_DEGREE = 100;
     Config.FILESYSTEM_ENABLED = true;
     Config.JAS_NO_THREADS = true;
-    F.initSymbols();
+    F.initSymja();
     try {
       F.await();
     } catch (InterruptedException e) {

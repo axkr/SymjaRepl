@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>SymjaREPL</groupId>
 	<artifactId>SymjaREPL</artifactId>
-	<version>3.1.0-SNAPSHOT</version>
+	<version>3.3.0-SNAPSHOT</version>
 	<licenses>
 		<license>
 			<name>GNU General Public License, Version 3</name>
@@ -67,7 +68,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
+		<maven.compiler.release>17</maven.compiler.release>
 		<release.build>false</release.build>
 		<deployment.suppress>false</deployment.suppress> <!-- child modules can
 		set this true to not be published -->
@@ -78,13 +80,28 @@
 		<dependency>
 			<groupId>org.matheclipse</groupId>
 			<artifactId>matheclipse-core</artifactId>
-			<version>3.1.0-SNAPSHOT</version>
+			<version>3.3.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.matheclipse</groupId>
 			<artifactId>matheclipse-gpl</artifactId>
-			<version>3.1.0-SNAPSHOT</version>
+			<version>3.1.2-SNAPSHOT</version>
+		</dependency>
+
+		<!-- Markdown -> HTML rendering for ServletWASMDoc -->
+		<dependency>
+			<groupId>org.commonmark</groupId>
+			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<version>0.28.0</version>
+		</dependency>
+
+		<!-- Pure-Java SVG rasterizer used by ServletWASM#toIpynb to embed
+		     image/png representations alongside image/svg+xml in Jupyter cells. -->
+		<dependency>
+			<groupId>com.github.weisj</groupId>
+			<artifactId>jsvg</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 
 	</dependencies>
@@ -101,13 +118,42 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.5.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>extra-enforcer-rules</artifactId>
+						<version>1.11.0</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>enforce-bytecode-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<enforceBytecodeVersion>
+									<maxJdkVersion>17</maxJdkVersion>
+									<ignoredScopes>test</ignoredScopes>
+								</enforceBytecodeVersion>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
 					<release>${java.version}</release>
 				</configuration>
 			</plugin>
-	<!--		<plugin>
+			<!--		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.7.1</version>
@@ -132,100 +178,165 @@
 				</executions>
 			</plugin> -->
 			<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-shade-plugin</artifactId>
-    <version>3.5.2</version> <executions>
-        <execution>
-            <phase>package</phase>
-            <goals>
-                <goal>shade</goal>
-            </goals>
-             <configuration>
-                <minimizeJar>true</minimizeJar> 
-                <filters>
-                    <filter>
-                        <artifact>*:*</artifact>
-                        <excludes>
-                            <exclude>META-INF/*.SF</exclude>
-                            <exclude>META-INF/*.DSA</exclude>
-                            <exclude>META-INF/*.RSA</exclude>
-                        </excludes>
-                    </filter>
-                </filters>
-                <transformers>
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                        <mainClass>org.matheclipse.repl.SymjaREPL</mainClass>
-                    </transformer>
-                </transformers>  
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
-<plugin>
-    <groupId>com.github.wvengen</groupId>
-    <artifactId>proguard-maven-plugin</artifactId>
-    <version>2.7.0</version>
-    <executions>
-        <execution>
-            <id>proguard-obfuscate-fatjar</id>
-            <phase>verify</phase>
-            <goals>
-                <goal>proguard</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration> 
-        <injar>${project.build.finalName}.jar</injar>
-        <outjar>${project.build.finalName}-obfuscated.jar</outjar>
-        <obfuscate>true</obfuscate>
-        <options> 
-            <option>-keepclassmembers enum * {public static **[] values(); public static ** valueOf(java.lang.String);}</option>
-            <option>-keep public class org.matheclipse.repl.SymjaREPL { public static void main(java.lang.String[]); }</option>
-  <!--          <option>-keep class * implements org.matheclipse.core.interfaces.IExpr { *; }</option> -->
-            <option>-keep class org.matheclipse.core.basic.AndroidLoggerFix { *; }</option>
-            <option>-keep class org.matheclipse.core.expression.data.CompiledFunctionExpr { *; }</option>
-            <option>-keep class com.esotericsoftware.** { *; }</option>
-            <option>-keep class com.fasterxml.jackson.core.type.TypeReference { *; }</option>
-            <option>-keep class com.fasterxml.jackson.databind.** { *; }</option>
-            <option>-keep class com.google.common.eventbus.Subscriber { *; }</option>
-            <option>-keep class com.google.common.base.**  { *; }</option>
-            <option>-keep class com.google.common.io.**  { *; }</option>
-            <option>-keep class com.google.common.reflect.**  { *; }</option>
-            <option>-keep class com.google.common.util.concurrent.**  { *; }</option>
-            <option>-keep class com.univocity.parsers.annotations.helpers.AnnotationHelper { *; }</option>
-            <option>-keep class com.univocity.parsers.common.processor.core.BeanConversionProcessor { *; }</option>
-            <option>-keep class de.tilman_neumann.jml.** { *; }</option>
-            <option>-keep class edu.jas.poly.GenPolynomial { *; }</option>
-            <option>-keep class it.unimi.dsi.fastutil.io.FastBufferedInputStream { *; }</option>
-            <option>-keep class it.unimi.dsi.fastutil.io.FastBufferedOutputStream { *; }</option>
-            <option>-keep class org.apache.commons.lang3.** { *; }</option>
-            <option>-keep class org.apache.commons.io.input.ByteBufferCleaner { *; }</option>
-            <option>-keep class org.apache.logging.log4j.core.config.** { *; }</option> 
-            <option>-keep class org.apache.logging.log4j.core.util.OptionConverter { *; }</option> 
-            <option>-keep class org.codehaus.janino.ReflectionIClass { *; }</option> 
-            <option>-keep class org.apfloat.ApfloatContext { *; }</option>
-            <option>-keep class org.apfloat.internal.LongBuilderFactory { *; }</option>
-            <option>-keep class org.antlr.v4.** { *; }</option>
-            <option>-keep class org.codehaus.commons.** { *; }</option>
-            <option>-keep class org.ehcache.sizeof.impl.** { *; }</option>
-            <option>-keep class org.hipparchus.optim.linear.** { *; }</option>
-            <option>-keep class org.jgrapht.util.SupplierUtil { *; }</option> 
-            <option>-keep class org.objenesis.instantiator.** { *; }</option>
-            <option>-keep class org.objenesis.strategy.PlatformDescription { *; }</option>
-            <option>-keep class org.objenesis.strategy.SingleInstantiatorStrategy { *; }</option>
-            <option>-keep class org.slf4j.helpers.SubstituteLogger { *; }</option>
-            <option>-keep class uk.ac.ed.ph.snuggletex.internal.util.ObjectDumper { *; }</option>
-            <option>-keep class uk.ac.ed.ph.snuggletex.internal.util.ObjectUtilities { *; }</option>
-            <option>-keep class us.hebi.matlab.mat.util.** { *; }</option>
-            <option>-dontwarn</option>
-            <option>-dontoptimize</option>
-        </options>
-        <libs>
-            <lib>${java.home}/jmods/java.base.jmod</lib>
-            <lib>${java.home}/jmods/java.desktop.jmod</lib>
-        </libs>   
-    </configuration>
-</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.5.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<minimizeJar>true</minimizeJar>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>module-info.class</exclude>
+										<exclude>
+											META-INF/versions/*/module-info.class</exclude>
+										<exclude>META-INF/versions/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>org.matheclipse.repl.ServletWASM</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.wvengen</groupId>
+				<artifactId>proguard-maven-plugin</artifactId>
+				<version>2.7.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.guardsquare</groupId>
+						<artifactId>proguard-base</artifactId>
+						<version>7.9.1</version>
+					</dependency>
+					<dependency>
+						<groupId>com.guardsquare</groupId>
+						<artifactId>proguard-core</artifactId>
+						<version>9.3.2</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>proguard-obfuscate-fatjar</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>proguard</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<injar>${project.build.finalName}.jar</injar>
+					<outjar>${project.build.finalName}-obfuscated.jar</outjar>
+					<obfuscate>true</obfuscate>
+					<options>
+						<option>-keepclassmembers enum * {public static **[]
+							values(); public static **
+							valueOf(java.lang.String);}</option>
+						<option>-keep public class
+							org.matheclipse.repl.SymjaREPL { public static void
+							main(java.lang.String[]); }</option>
+						<!--          <option>-keep class * implements
+						org.matheclipse.core.interfaces.IExpr { *; }</option> -->
+						<option>-keep class org.matheclipse.repl.** { *; }</option>
+						<option>-keep class
+							org.matheclipse.core.basic.AndroidLoggerFix { *; }</option>
+						<option>-keep class
+							org.matheclipse.core.expression.data.CompiledFunctionExpr
+							{ *; }</option>
+						<option>-keep class com.esotericsoftware.** { *; }</option>
+						<option>-keep class
+							com.fasterxml.jackson.core.type.TypeReference { *; }</option>
+						<option>-keep class com.fasterxml.jackson.databind.** {
+							*; }</option>
+						<option>-keep class
+							com.google.common.eventbus.Subscriber { *; }</option>
+						<option>-keep class com.google.common.base.** { *; }</option>
+						<option>-keep class com.google.common.io.** { *; }</option>
+						<option>-keep class com.google.common.reflect.** { *; }</option>
+						<option>-keep class com.google.common.util.concurrent.**
+							{ *; }</option>
+						<option>-keep class
+							com.univocity.parsers.annotations.helpers.AnnotationHelper
+							{ *; }</option>
+						<option>-keep class
+							com.univocity.parsers.common.processor.core.BeanConversionProcessor
+							{ *; }</option>
+						<option>-keep class de.tilman_neumann.jml.** { *; }</option>
+						<option>-keep class edu.jas.poly.GenPolynomial { *; }</option>
+						<option>-keep class
+							it.unimi.dsi.fastutil.io.FastBufferedInputStream {
+							*; }</option>
+						<option>-keep class
+							it.unimi.dsi.fastutil.io.FastBufferedOutputStream {
+							*; }</option>
+						<option>-keep class org.apache.commons.lang3.** { *; }</option>
+						<option>-keep class
+							org.apache.commons.io.input.ByteBufferCleaner { *; }</option>
+						<option>-keep class
+							org.apache.logging.log4j.core.config.** { *; }</option>
+						<option>-keep class
+							org.apache.logging.log4j.core.util.OptionConverter {
+							*; }</option>
+						<option>-keep class org.codehaus.janino.ReflectionIClass
+							{ *; }</option>
+						<option>-keep class org.apfloat.ApfloatContext { *; }</option>
+						<option>-keep class
+							org.apfloat.internal.LongBuilderFactory { *; }</option>
+						<option>-keep class org.antlr.v4.** { *; }</option>
+						<option>-keep class org.codehaus.commons.** { *; }</option>
+						<option>-keep class org.commonmark.** { *; }</option>
+						<option>-keep class org.ehcache.sizeof.impl.** { *; }</option>
+						<option>-keep class org.hipparchus.optim.linear.** { *;
+							}</option>
+						<option>-keep class org.jgrapht.util.SupplierUtil { *; }</option>
+						<option>-keep class org.objenesis.instantiator.** { *; }</option>
+						<option>-keep class
+							org.objenesis.strategy.PlatformDescription { *; }</option>
+						<option>-keep class
+							org.objenesis.strategy.SingleInstantiatorStrategy {
+							*; }</option>
+						<option>-keep class org.slf4j.helpers.SubstituteLogger {
+							*; }</option>
+						<option>-keep class
+							uk.ac.ed.ph.snuggletex.internal.util.ObjectDumper {
+							*; }</option>
+						<option>-keep class
+							uk.ac.ed.ph.snuggletex.internal.util.ObjectUtilities
+							{ *; }</option>
+						<option>-keep class us.hebi.matlab.mat.util.** { *; }</option>
+						<option>-keep class com.github.weisj.jsvg.** { *; }</option>
+						<option>-dontwarn com.github.weisj.jsvg.**</option>
+						<option>-dontwarn</option>
+						<option>-dontnote</option>
+						<option>-dontoptimize</option>
+						<option>-dontpreverify</option>
+						<option>-ignorewarnings</option>
+					</options>
+					<libs>
+						<lib>${java.home}/jmods/java.base.jmod</lib>
+						<lib>${java.home}/jmods/java.desktop.jmod</lib>
+						<lib>${java.home}/jmods/java.compiler.jmod</lib>
+						<lib>${java.home}/jmods/java.logging.jmod</lib>
+						<lib>${java.home}/jmods/java.naming.jmod</lib>
+						<lib>${java.home}/jmods/java.sql.jmod</lib>
+						<lib>${java.home}/jmods/java.xml.jmod</lib>
+					</libs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
